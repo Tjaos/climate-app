@@ -2,12 +2,36 @@ import { StyleSheet, Text, View } from "react-native";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Image } from "react-native-elements";
 import { SelectList } from "react-native-dropdown-select-list";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
+import axios from "axios";
 
 export default function Main() {
 
-  const [selected, setSelected ] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [weatherData, setWeatherData] = useState(null);
+
+  const apiKey = '3d8249e6';
+
+  useEffect(()=>{
+    if (selectedCity) {
+      const apiUrl = `https://api.hgbrasil.com/weather?key=${apiKey}&city_name=${encodeURIComponent(selectedCity)}`;
+
+      axios.get(apiUrl)
+        .then(response => {
+          const data = response.data;
+
+          setWeatherData(data);
+        })
+        .catch(error => {
+          console.error("Erro ao obter dados de clima:", error);
+        });
+    }
+  }, [selectedCity]);
+
+  const handleCityChange = (value) => {
+    setSelectedCity(value);
+  };
 
   const data = [
     {key:'1', value:'Recife'},
@@ -18,7 +42,7 @@ export default function Main() {
     {key:'6', value:'Garanhuns'},
     {key:'7', value:'Igarassu'},
 
-  ]
+  ];
   return (
     <ScrollView style={styles.container}>
       <View style={styles.background}>
@@ -37,7 +61,7 @@ export default function Main() {
               style={{ paddingLeft: 10 }}
             />
             <SelectList style={{ fontSize: 14, fontWeight: "bold" }}
-              setSelected={(val => setSelected(val))}
+              setSelected={(val) => handleCityChange(val)}
               data={data}
               save="value"
             />
@@ -57,10 +81,15 @@ export default function Main() {
             source={require("../assets/cloud.png")}
           />
           <Text style={{ fontSize: 60, fontWeight: "400", color: "#fff" }}>
-            26°
+          {weatherData && weatherData.results && weatherData.results.temp}°
           </Text>
-          <Text style={{ color: "#fff", fontSize: 16 }}>precipitacions</Text>
-          <Text style={{ color: "#fff", fontSize: 16 }}>Max.:31° Min.:25°</Text>
+          <Text style={{ color: "#fff", fontSize: 16 }}>
+          {weatherData && weatherData.results && weatherData.results.description}
+          </Text>
+          <Text style={{ color: "#fff", fontSize: 16 }}>
+          Max.: {weatherData && weatherData.results && weatherData.results.forecast[0].max}°
+  Min.: {weatherData && weatherData.results && weatherData.results.forecast[0].min}°
+          </Text>
         </View>
         <View style={styles.botContent}>
           <View
@@ -77,7 +106,7 @@ export default function Main() {
           >
             <Text style={{ color: "#fff" }}>16%</Text>
             <Text style={{ color: "#fff" }}>90%</Text>
-            <Text style={{ color: "#fff" }}>10km/h</Text>
+            <Text style={{ color: "#fff" }}>{weatherData && weatherData.results && weatherData.results.wind_speedy}</Text>
           </View>
           <View
             style={{
