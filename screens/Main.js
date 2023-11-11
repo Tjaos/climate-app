@@ -7,45 +7,53 @@ import { ScrollView } from "react-native";
 import axios from "axios";
 
 export default function Main() {
-
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCity, setSelectedCity] = useState("Recife");
   const [weatherData, setWeatherData] = useState(null);
 
-  const apiKey = '3d8249e6';
+  const apiKey = "3d8249e6";
 
-  useEffect(()=>{
+  useEffect(() => {
     if (selectedCity) {
-      const apiUrl = `https://api.hgbrasil.com/weather?key=${apiKey}&city_name=${encodeURIComponent(selectedCity)}`;
+      const apiUrl = `https://api.hgbrasil.com/weather?key=${apiKey}&city_name=${encodeURIComponent(
+        selectedCity
+      )}`;
 
-      axios.get(apiUrl)
-        .then(response => {
+      axios
+        .get(apiUrl)
+        .then((response) => {
           const data = response.data;
 
           setWeatherData(data);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Erro ao obter dados de clima:", error);
         });
     }
+    
   }, [selectedCity]);
-
+  
   const handleCityChange = (value) => {
     setSelectedCity(value);
   };
+  const condition_slug = weatherData?.results?.condition_slug || null;
+  console.log("Condition Slug:", condition_slug);
 
   const data = [
-    {key:'1', value:'Recife'},
-    {key:'2', value:'Jaboatão dos Guararapes'},
-    {key:'3', value:'Gravatá'},
-    {key:'4', value:'Caruaru'},
-    {key:'5', value:'João Pessoa'},
-    {key:'6', value:'Garanhuns'},
-    {key:'7', value:'Igarassu'},
-
+    { key: "1", value: "Recife" },
+    { key: "2", value: "Jaboatão dos Guararapes" },
+    { key: "3", value: "Gravatá" },
+    { key: "4", value: "Caruaru" },
+    { key: "5", value: "João Pessoa" },
+    { key: "6", value: "Garanhuns" },
+    { key: "7", value: "Igarassu" },
   ];
+  const isDayTime = () => {
+    const currentHour = new Date().getHours();
+    return currentHour >= 6 && currentHour < 18;
+  };
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.background}>
+      <View style={[styles.background, { backgroundColor: isDayTime() ? "#87CEFA" : "#191970" }]}>
         <View style={styles.topContent}>
           <View
             style={{
@@ -60,7 +68,8 @@ export default function Main() {
               color={"rgb(103,113,167)"}
               style={{ paddingLeft: 10 }}
             />
-            <SelectList style={{ fontSize: 14, fontWeight: "bold" }}
+            <SelectList
+              style={{ fontSize: 14, fontWeight: "bold" }}
               setSelected={(val) => handleCityChange(val)}
               data={data}
               save="value"
@@ -78,17 +87,26 @@ export default function Main() {
         <View style={styles.midContent}>
           <Image
             style={{ height: 100, width: 100 }}
-            source={require("../assets/cloud.png")}
+            source={require(`../assets/cloud.png`)}
           />
           <Text style={{ fontSize: 60, fontWeight: "400", color: "#fff" }}>
-          {weatherData && weatherData.results && weatherData.results.temp}°
+            {weatherData && weatherData.results && weatherData.results.temp}°
           </Text>
           <Text style={{ color: "#fff", fontSize: 16 }}>
-          {weatherData && weatherData.results && weatherData.results.description}
+            {weatherData &&
+              weatherData.results &&
+              weatherData.results.description}
           </Text>
           <Text style={{ color: "#fff", fontSize: 16 }}>
-          Max.: {weatherData && weatherData.results && weatherData.results.forecast[0].max}°
-  Min.: {weatherData && weatherData.results && weatherData.results.forecast[0].min}°
+            Max.:{" "}
+            {weatherData &&
+              weatherData.results &&
+              weatherData.results.forecast[0].max}
+            ° Min.:{" "}
+            {weatherData &&
+              weatherData.results &&
+              weatherData.results.forecast[0].min}
+            °
           </Text>
         </View>
         <View style={styles.botContent}>
@@ -106,7 +124,11 @@ export default function Main() {
           >
             <Text style={{ color: "#fff" }}>16%</Text>
             <Text style={{ color: "#fff" }}>90%</Text>
-            <Text style={{ color: "#fff" }}>{weatherData && weatherData.results && weatherData.results.wind_speedy}</Text>
+            <Text style={{ color: "#fff" }}>
+              {weatherData &&
+                weatherData.results &&
+                weatherData.results.wind_speedy}
+            </Text>
           </View>
           <View
             style={{
@@ -130,14 +152,23 @@ export default function Main() {
                   flexDirection: "row",
                 }}
               >
-                <Text style={{ fontWeight: "bold", color: "#fff" }}>Today</Text>
-                <Text style={{ color: "#fff" }}>Out,27</Text>
+                <Text style={{ fontWeight: "bold", color: "#fff" }}>
+                  {weatherData &&
+                    weatherData.results &&
+                    weatherData.results.forecast[0].weekday}
+                </Text>
+                <Text style={{ color: "#fff" }}>
+                  {weatherData &&
+                    weatherData.results &&
+                    weatherData.results.date}
+                </Text>
               </View>
-              <View 
-              style={{
-                justifyContent:"space-between",
-                flexDirection:"row"
-                }}>
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
+              >
                 <View
                   style={{
                     paddingTop: 20,
@@ -148,9 +179,24 @@ export default function Main() {
                     height: "80%",
                   }}
                 >
-                  <Text style={{color:'#fff'}}>31°C</Text>
-                  <Icon name="cloud" size={25} color={'#fff'} />
-                  <Text style={{color:'#fff'}}>15:00</Text>
+                  <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[1].weekday}
+                  </Text>
+                  <Text style={{ color: "#fff" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[1].max}
+                    °
+                  </Text>
+                  <Icon name="cloud" size={25} color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[1].min}
+                    °
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -162,9 +208,24 @@ export default function Main() {
                     height: "80%",
                   }}
                 >
-                  <Text style={{color:'#fff'}}>31°C</Text>
-                  <Icon name="cloud" size={25} color={'#fff'} />
-                  <Text style={{color:'#fff'}}>15:00</Text>
+                  <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[2].weekday}
+                  </Text>
+                  <Text style={{ color: "#fff" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[2].max}
+                    °
+                  </Text>
+                  <Icon name="cloud" size={25} color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[2].min}
+                    °
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -176,9 +237,25 @@ export default function Main() {
                     height: "80%",
                   }}
                 >
-                  <Text style={{color:'#fff'}}>31°C</Text>
-                  <Icon name="cloud" size={25} color={'#fff'} />
-                  <Text style={{color:'#fff'}}>15:00</Text>
+                  <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[3].weekday}
+                  </Text>
+                  <Text style={{ color: "#fff" }}>
+                    {" "}
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[3].max}
+                    °
+                  </Text>
+                  <Icon name="cloud" size={25} color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[3].min}
+                    °
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -190,24 +267,39 @@ export default function Main() {
                     height: "80%",
                   }}
                 >
-                  <Text style={{color:'#fff'}}>31°C</Text>
-                  <Icon name="cloud" size={25} color={'#fff'} />
-                  <Text style={{color:'#fff'}}>15:00</Text>
+                  <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[4].weekday}
+                  </Text>
+                  <Text style={{ color: "#fff" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[4].max}
+                    °
+                  </Text>
+                  <Icon name="cloud" size={25} color={"#fff"} />
+                  <Text style={{ color: "#fff" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[4].min}
+                    °
+                  </Text>
                 </View>
-                
               </View>
             </View>
-
           </View>
-          <View style={{
+          <View
+            style={{
               marginTop: 20,
-              marginBottom:20,
+              marginBottom: 20,
               width: "90%",
               height: 200,
               backgroundColor: "#5F9F9F",
               borderRadius: 23,
-            }}>
-              <View
+            }}
+          >
+            <View
               style={{
                 justifyContent: "space-between",
                 flexDirection: "column",
@@ -220,28 +312,54 @@ export default function Main() {
                   flexDirection: "row",
                 }}
               >
-                <Text style={{ fontWeight: "bold", color: "#fff" }}>Next Forecast</Text>
-                <Icon name="event" size={25} color={'#fff'} />
+                <Text style={{ fontWeight: "bold", color: "#fff" }}>
+                  Próxima previsão
+                </Text>
+                <Icon name="event" size={25} color={"#fff"} />
               </View>
-              <View 
-              style={{
-                justifyContent:"space-between",
-                flexDirection:"row",
-                paddingTop:20
-                }}>
-                  <Text style={{color:'#fff'}}>Monday</Text>
-                  <Icon name="grain" size={25} color={'#fff'} />
-                  <Text style={{color:'#fff'}}>13°c  <Text style={{color:'#c0c0c0'}} >10°c</Text></Text>
-               
-                
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  paddingTop: 20,
+                }}
+              >
+                <Text style={{ color: "#fff" }}>  Amanhã  </Text>
+                <Icon name="grain" size={25} color={"#fff"} />
+                <Text style={{ color: "#fff" }}>
+                  {weatherData &&
+                    weatherData.results &&
+                    weatherData.results.forecast[1].max}
+                  °c{" "}
+                  <Text style={{ color: "#c0c0c0" }}>
+                    {weatherData &&
+                      weatherData.results &&
+                      weatherData.results.forecast[1].min}
+                    °c
+                  </Text>
+                </Text>
               </View>
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  paddingTop: 20,
+                }}
+              >
+                <Text style={{ color: "#fff" }}>  {weatherData &&
+                    weatherData.results &&
+                    weatherData.results.forecast[1].description}</Text>
+                <Text style={{ color: "#fff" }}>
+                  {weatherData &&
+                    weatherData.results &&
+                    weatherData.results.forecast[1].wind_speedy}
+                </Text>
+              </View>
+
             </View>
           </View>
-
-          
         </View>
       </View>
-      
     </ScrollView>
   );
 }
@@ -274,7 +392,6 @@ const styles = StyleSheet.create({
   },
   background: {
     height: "100%",
-    backgroundColor: "#ADD8E6",
     paddingTop: 40,
   },
 });
