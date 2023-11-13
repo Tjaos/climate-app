@@ -11,16 +11,16 @@ Sobre:
 ##Imagens:
 
 <p align="center">
-  <img style="width:100; hight:200;" src="https://github.com/Tjaos/climate-app/blob/main/assets/printscreens/diaLimpo.jpeg" />
+  <img style="width:50; hight:25;" src="https://github.com/Tjaos/climate-app/blob/main/assets/printscreens/diaLimpo.jpeg" />
 </p>
 <p align="center">
-  <img style="width:100; hight:200;" src="https://github.com/Tjaos/climate-app/blob/main/assets/printscreens/joaoPessoa.jpeg" />
+  <img style="width:50; hight:25;" src="https://github.com/Tjaos/climate-app/blob/main/assets/printscreens/joaoPessoa.jpeg" />
 </p>
 <p align="center">
-  <img style="width:100; hight:200;" src="https://github.com/Tjaos/climate-app/blob/main/assets/printscreens/jaboataoNoite.jpeg" />
+  <img style="width:50; hight:25;" src="https://github.com/Tjaos/climate-app/blob/main/assets/printscreens/jaboataoNoite.jpeg" />
 </p>
 <p align="center">  
-  <img style="width:100; hight:200;" src="https://github.com/Tjaos/climate-app/blob/main/assets/printscreens/jaboataoNoite1.jpeg" />
+  <img style="width:50; hight:25;" src="https://github.com/Tjaos/climate-app/blob/main/assets/printscreens/jaboataoNoite1.jpeg" />
 </p>
 ## Passo a passo para testes
 - Importante possuir o expo: (https://docs.expo.dev/get-started/installation/)
