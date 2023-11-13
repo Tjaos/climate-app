@@ -5,12 +5,24 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
 import axios from "axios";
+import clear_day from "../assets/image/clear_day.png";
+import clear_night from "../assets/image/clear_night.png";
+import cloud from "../assets/image/cloud.png";
+import cloudly_day from "../assets/image/cloudly_day.png";
+import cloudly_night from "../assets/image/cloudly_night.png";
+import fog from "../assets/image/fog.png";
+import hail from "../assets/image/hail.png";
+import none_day from "../assets/image/none_day.png";
+import none_night from "../assets/image/none_night.png";
+import rain from "../assets/image/rain.png";
+import snow from "../assets/image/snow.png";
+import storm from "../assets/image/storm.png";
 
 export default function Main() {
   const [selectedCity, setSelectedCity] = useState("Recife");
   const [weatherData, setWeatherData] = useState(null);
 
-  const apiKey = "3d8249e6";
+  const apiKey = "d47ca23c";
 
   useEffect(() => {
     if (selectedCity) {
@@ -29,14 +41,27 @@ export default function Main() {
           console.error("Erro ao obter dados de clima:", error);
         });
     }
-    
   }, [selectedCity]);
-  
+
   const handleCityChange = (value) => {
     setSelectedCity(value);
   };
+  const conditionImage = {
+    clear_day: clear_day,
+    cloud: cloud,
+    clear_night: clear_night,
+    cloudly_day: cloudly_day,
+    cloudly_night: cloudly_night,
+    fog: fog,
+    hail: hail,
+    none_day: none_day,
+    none_night: none_night,
+    rain: rain,
+    snow: snow,
+    storm: storm,
+  };
   const condition_slug = weatherData?.results?.condition_slug || null;
-  console.log("Condition Slug:", condition_slug);
+  // console.log("condition_slug:", condition_slug);
 
   const data = [
     { key: "1", value: "Recife" },
@@ -46,14 +71,23 @@ export default function Main() {
     { key: "5", value: "João Pessoa" },
     { key: "6", value: "Garanhuns" },
     { key: "7", value: "Igarassu" },
+    { key: "8", value: "São Paulo" },
   ];
   const isDayTime = () => {
     const currentHour = new Date().getHours();
     return currentHour >= 6 && currentHour < 18;
   };
+  const imagePath = conditionImage[condition_slug];
+  //console.log("imagePath:", typeof(imagePath));
+
   return (
     <ScrollView style={styles.container}>
-      <View style={[styles.background, { backgroundColor: isDayTime() ? "#87CEFA" : "#191970" }]}>
+      <View
+        style={[
+          styles.background,
+          { backgroundColor: isDayTime() ? "#87CEFA" : "#191970" },
+        ]}
+      >
         <View style={styles.topContent}>
           <View
             style={{
@@ -73,6 +107,17 @@ export default function Main() {
               setSelected={(val) => handleCityChange(val)}
               data={data}
               save="value"
+              boxStyles={{ borderRadius: 25, marginVertical: 8, columnGap: 5 }}
+              inputStyles={{
+                color: isDayTime() ? "gray" : "white",
+                fontWeight: "bold",
+                fontSize: 14,
+              }}
+              dropdownTextStyles={{
+                color: isDayTime() ? "gray" : "white",
+                fontWeight: "bold",
+              }}
+              defaultOption={{ key: "1", value: "Recife" }}
             />
           </View>
           <View>
@@ -87,8 +132,12 @@ export default function Main() {
         <View style={styles.midContent}>
           <Image
             style={{ height: 100, width: 100 }}
-            source={require(`../assets/cloud.png`)}
+            source={imagePath}
+            onError={(error) =>
+              console.error("Erro ao carregar imagem:", error)
+            }
           />
+
           <Text style={{ fontSize: 60, fontWeight: "400", color: "#fff" }}>
             {weatherData && weatherData.results && weatherData.results.temp}°
           </Text>
@@ -115,15 +164,33 @@ export default function Main() {
               justifyContent: "space-between",
               flexDirection: "row",
               width: "90%",
-              height: 50,
+              height: 80,
               backgroundColor: "#5F9F9F",
               alignItems: "center",
               padding: 10,
               borderRadius: 23,
             }}
           >
-            <Text style={{ color: "#fff" }}>16%</Text>
-            <Text style={{ color: "#fff" }}>90%</Text>
+            <Text style={{ color: "#fff" }}>
+              <Image
+                style={{ height: 20, width: 20, paddingRight: 5 }}
+                source={require("../assets/image/rain_probability.png")}
+              />
+              {weatherData &&
+                weatherData.results &&
+                weatherData.results.forecast[0].rain_probability}
+              %
+            </Text>
+            <Text style={{ color: "#fff" }}>
+              <Image
+                style={{ height: 20, width: 20, paddingRight: 5 }}
+                source={require("../assets/image/humidity.png")}
+              />
+              {weatherData &&
+                weatherData.results &&
+                weatherData.results.humidity}
+              %
+            </Text>
             <Text style={{ color: "#fff" }}>
               {weatherData &&
                 weatherData.results &&
@@ -324,7 +391,7 @@ export default function Main() {
                   paddingTop: 20,
                 }}
               >
-                <Text style={{ color: "#fff" }}>  Amanhã  </Text>
+                <Text style={{ color: "#fff" }}> Amanhã </Text>
                 <Icon name="grain" size={25} color={"#fff"} />
                 <Text style={{ color: "#fff" }}>
                   {weatherData &&
@@ -346,16 +413,18 @@ export default function Main() {
                   paddingTop: 20,
                 }}
               >
-                <Text style={{ color: "#fff" }}>  {weatherData &&
+                <Text style={{ color: "#fff" }}>
+                  {" "}
+                  {weatherData &&
                     weatherData.results &&
-                    weatherData.results.forecast[1].description}</Text>
+                    weatherData.results.forecast[1].description}
+                </Text>
                 <Text style={{ color: "#fff" }}>
                   {weatherData &&
                     weatherData.results &&
                     weatherData.results.forecast[1].wind_speedy}
                 </Text>
               </View>
-
             </View>
           </View>
         </View>
