@@ -11,8 +11,16 @@ Sobre:
 ##Imagens:
 
 <p align="center">
-  <img style="width:400; hight:400;" src="./assets/printscreens/joaoPessoa.jpeg" /><img style="width:400; hight:400;" src="./assets/printscreens/diaLimpo.jpeg.jpeg" />
-  <img style="width:400; hight:400;" src="./assets/printscreens/jaboataoNoite.jpeg.jpeg" /><img style="width:400; hight:400;" src="./assets/printscreens/jaboataoNoite1.jpeg.jpeg" />
+  <img style="width:100; hight:200;" src="./assets/printscreens/joaoPessoa.jpeg" />
+</p>
+<p align="center">
+  <img style="width:100; hight:200;" src="./assets/printscreens/diaLimpo.jpeg.jpeg" />
+</p>
+<p align="center">
+  <img style="width:100; hight:200;" src="./assets/printscreens/jaboataoNoite.jpeg.jpeg" />
+</p>
+<p align="center">  
+  <img style="width:100; hight:200;" src="./assets/printscreens/jaboataoNoite1.jpeg.jpeg" />
 </p>
 ## Passo a passo para testes
 - Importante possuir o expo: (https://docs.expo.dev/get-started/installation/)
