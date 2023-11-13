@@ -1,11 +1,19 @@
-Climate-App
-===
+# Climate-App
+
 Sobre:
+
 ## Informações
-- Título:  `Climate-App`
-- Autor:  `Thiago José Amaral`,
+
+- Título: `Climate-App`
+- Autor: `Thiago José Amaral`,
 - tecnologias: `React Native + javascript`
 
+##Imagens:
+
+<p align="center">
+  <img style="width:400; hight:400;" src="./assets/printscreens/joaoPessoa.jpeg" /><img style="width:400; hight:400;" src="./assets/printscreens/diaLimpo.jpeg.jpeg" />
+  <img style="width:400; hight:400;" src="./assets/printscreens/jaboataoNoite.jpeg.jpeg" /><img style="width:400; hight:400;" src="./assets/printscreens/jaboataoNoite1.jpeg.jpeg" />
+</p>
 ## Passo a passo para testes
 - Importante possuir o expo: (https://docs.expo.dev/get-started/installation/)
 - expogo no seu dispositivo móvel(smartphone) recomendado usar 
@@ -19,6 +27,7 @@ rodar o comando `npx expo start` e escanear o qr code através do celular.
 Lembre-se de ter o celular conectado na mesma rede de internet do seu computador.
 
 ## References
+
 - [Api](https://console.hgbrasil.com/)
 - [React-native](https://reactnative.dev/)
 - [Expo](https://expo.dev/)
